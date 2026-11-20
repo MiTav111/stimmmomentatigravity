@@ -3575,19 +3575,19 @@
         }
       }
 
-      // Optional: Trage hier deine bereitgestellte Google-Apps-Script-Web-App-URL ein,
-      // damit alle Nutzerinnen und Nutzer geräteübergreifend dieselbe Cloud-API nutzen.
-      const DEFAULT_API_URL = '';
+      // Bereitgestellte Google-Apps-Script-Web-App-URL für geräteübergreifende Cloud-Speicherung
+      const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbxuzRa57QQXj33PeOeL5u-G2D7Yl8E4v0SNqNN9hmRNceyW9pIQifkm1uT21VUJ5xEI5g/exec';
 
       function getApiUrl() {
-        const stored = (localStorage.getItem(STORAGE_KEYS.apiUrl) || '').trim();
-        return stored || DEFAULT_API_URL.trim();
+        const stored = localStorage.getItem(STORAGE_KEYS.apiUrl);
+        if (stored !== null) return stored.trim();
+        return DEFAULT_API_URL.trim();
       }
 
       function setApiUrl(url) {
         const trimmed = (url || '').trim();
         if (!trimmed) {
-          localStorage.removeItem(STORAGE_KEYS.apiUrl);
+          localStorage.setItem(STORAGE_KEYS.apiUrl, '');
           return { ok: true, url: '' };
         }
         try {

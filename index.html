@@ -2352,8 +2352,8 @@
           <p>Jeder Sticker erhält eine eigene eindeutige ID und einen gestochen scharfen Offline-QR-Code. Einfach konfigurieren, als DIN A4 ausdrucken oder einzeln als PNG sichern.</p>
         </div>
 
-        <!-- Ziel-URL-Steuerung -->
-        <div id="urlBanner" class="url-banner" role="region" aria-live="polite">
+        <!-- Ziel-URL-Steuerung (nur sichtbar im eingebetteten iFrame ohne direkte Hosting-URL) -->
+        <div id="urlBanner" class="url-banner" role="region" aria-live="polite" style="display:none;">
           <div class="url-banner-top">
             <div>
               <span id="urlStatusPill" class="url-status-pill">Prüfe Ziel-URL …</span>
@@ -3476,16 +3476,16 @@
       }
 
       function getEffectiveBaseUrl() {
+        const host = detectHostUrl();
+        if (host.detected) {
+          return { ok: true, url: host.url, source: 'host' };
+        }
         const saved = localStorage.getItem(STORAGE_KEYS.customBaseUrl);
         if (saved) {
           const checkSaved = sanitizeBaseUrl(saved);
           if (checkSaved.ok) {
             return { ok: true, url: checkSaved.url, source: 'custom' };
           }
-        }
-        const host = detectHostUrl();
-        if (host.detected) {
-          return { ok: true, url: host.url, source: 'host' };
         }
         return { ok: false, url: '', source: 'none' };
       }
@@ -4121,14 +4121,20 @@
       const hostInfo = UrlManager.detectHostUrl();
 
       banner.classList.remove('is-valid', 'is-missing');
-      if (eff.ok) {
+      if (hostInfo.detected) {
+        // Auf einer gültigen Hosting-URL ist die Ziel-URL fest — Banner ausblenden
+        banner.style.display = 'none';
+        printBtn.disabled = false;
+      } else if (eff.ok) {
+        banner.style.display = 'block';
         banner.classList.add('is-valid');
-        pill.textContent = eff.source === 'custom' ? 'Eigene Ziel-URL aktiv' : 'Hosting-URL automatisch erkannt';
+        pill.textContent = 'Eigene Ziel-URL aktiv';
         text.innerHTML = `Alle QR-Codes zeigen sauber auf <code>${escapeHtml(eff.url)}?id=…</code>`;
         input.value = eff.url;
-        resetBtn.style.display = (eff.source === 'custom' && hostInfo.detected) ? '' : 'none';
+        resetBtn.style.display = 'none';
         printBtn.disabled = false;
       } else {
+        banner.style.display = 'block';
         banner.classList.add('is-missing');
         pill.textContent = 'Ziel-URL erforderlich';
         text.textContent = 'Die Seite läuft in einem eingebetteten Rahmen (z. B. Google Sites iFrame) oder lokal ohne öffentliche Web-Adresse. Bitte trage deine veröffentlichte Ziel-URL ein, damit Druck und PNG-Export freigeschaltet werden.';

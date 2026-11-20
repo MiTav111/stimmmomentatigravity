@@ -2320,7 +2320,7 @@
                 </li>
                 <li>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M20 6L9 17l-5-5"/></svg>
-                  <span>Mit optionaler eigener Google-Apps-Script-API oder lokalem Speicher</span>
+                  <span>Aufnahmen in der Cloud gespeichert — auf jedem Smartphone sofort abspielbar</span>
                 </li>
               </ul>
             </article>
@@ -2639,30 +2639,13 @@
           <div style="display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
             <h3 style="margin:0;">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
-              Gespeicherte Aufnahmen in diesem Browser
+              Zuletzt aufgenommene Sticker
             </h3>
-            <span id="storageBadge" class="demo-badge badge-sage" style="margin:0;">Lokaler Browser-Speicher aktiv</span>
+            <span id="storageBadge" class="demo-badge badge-sage" style="margin:0;">Cloud-Speicher aktiv</span>
           </div>
-          <p style="margin-bottom:12px;">Alle hier aufgenommenen Sticker erscheinen sofort in dieser Liste zum schnellen Wiederanhören oder Bearbeiten.</p>
+          <p style="margin-bottom:12px;">Alle hier aufgenommenen Sticker erscheinen sofort in dieser Liste und sind über ihren QR-Code auf jedem Smartphone abspielbar.</p>
           <div id="localStickerList" class="search-results"></div>
         </div>
-
-        <!-- Optionale Google-Apps-Script-API-Konfiguration -->
-        <details class="api-config-box">
-          <summary>
-            <span>Optionale Cloud-Anbindung (Google Apps Script API) konfigurieren</span>
-            <span style="font-size:0.82rem; color:var(--ink-muted); font-weight:500;">Für geräteübergreifende Wiedergabe</span>
-          </summary>
-          <div style="margin-top:14px; font-size:0.9rem; color:var(--ink-soft);">
-            <p>Ohne hinterlegte API-URL speichert StimmMoment Aufnahmen automatisch im lokalen Fallback (IndexedDB dieses Browsers). Wenn du deine eigene Google-Apps-Script-Web-App-URL hinterlegst, werden Aufnahmen per <code>POST</code> (<code>text/plain</code>) und <code>GET</code> direkt über deine Cloud-API synchronisiert, sodass jeder gescannte Sticker weltweit abspielbar ist.</p>
-            <div class="inline-form">
-              <label for="apiUrlInput" class="sr-only">Google Apps Script Web-App-URL</label>
-              <input type="url" id="apiUrlInput" class="text-input" placeholder="https://script.google.com/macros/s/.../exec" style="font-family:var(--font-mono); font-size:0.86rem;">
-              <button type="button" class="btn btn-primary btn-sm" id="saveApiUrlBtn">API-URL speichern</button>
-              <button type="button" class="btn btn-secondary btn-sm" id="clearApiUrlBtn">Nur lokal nutzen</button>
-            </div>
-          </div>
-        </details>
 
         <!-- Akkordeon FAQs mit Themen-Piktogrammen -->
         <div class="section-head" style="margin-top:46px; margin-bottom:26px;">
@@ -2772,7 +2755,7 @@
             <h4>1. Grundsatz der Datensparsamkeit</h4>
             <p>StimmMoment funktioniert ohne Benutzerkonto, ohne Werbe-Tracker und ohne Shop-Checkout. Die QR-Code-Erzeugung erfolgt vollständig lokal in deinem Browser (Offline-Engine) — es werden keine Sticker-Texte oder IDs an externe QR-Dienste übertragen.</p>
             <h4>2. Sprachaufnahmen &amp; Metadaten</h4>
-            <p>Wenn du eine Sprachaufnahme erstellst, entscheidest du selbst über die Aktivierung per Einwilligungs-Checkbox. Ohne angebundene Speicher-API verbleibt deine Aufnahme ausschließlich im lokalen Speicher deines Browsers (IndexedDB / localStorage). Wenn eine eigene Google-Apps-Script-API konfiguriert ist, werden Audioaufnahme, Sticker-ID, optionaler Titel, Sprechername, optionale E-Mail-Adresse sowie ein Hash deiner optionalen 4-stelligen PIN an diesen konfigurierten Endpunkt übermittelt.</p>
+            <p>Wenn du eine Sprachaufnahme erstellst, entscheidest du selbst über die Aktivierung per Einwilligungs-Checkbox. Erst nach deiner Freigabe werden Audioaufnahme, Sticker-ID, optionaler Titel, Sprechername, optionale E-Mail-Adresse sowie ein Hash deiner optionalen 4-stelligen PIN im angebundenen Cloud-Speicher gesichert (mit lokalem Zwischenspeicher im Browser als Offline-Backup), damit der Sticker beim Scannen auf jedem Smartphone abgespielt werden kann.</p>
             <h4>3. Mikrofonzugriff</h4>
             <p>Der Zugriff auf das Mikrofon erfolgt erst nach deinem ausdrücklichen Klick auf „Aufnahme starten“ und deiner Browser-Freigabe. Es findet keine Hintergrundaufzeichnung statt.</p>
             <h4>4. Löschung &amp; Widerruf</h4>
@@ -3575,31 +3558,11 @@
         }
       }
 
-      // Bereitgestellte Google-Apps-Script-Web-App-URL für geräteübergreifende Cloud-Speicherung
-      const DEFAULT_API_URL = 'https://script.google.com/macros/s/AKfycbxuzRa57QQXj33PeOeL5u-G2D7Yl8E4v0SNqNN9hmRNceyW9pIQifkm1uT21VUJ5xEI5g/exec';
+      // Fest eingebaute Cloud-Anbindung (Google Apps Script Web-App)
+      const FIXED_API_URL = 'https://script.google.com/macros/s/AKfycbxuzRa57QQXj33PeOeL5u-G2D7Yl8E4v0SNqNN9hmRNceyW9pIQifkm1uT21VUJ5xEI5g/exec';
 
       function getApiUrl() {
-        const stored = localStorage.getItem(STORAGE_KEYS.apiUrl);
-        if (stored !== null) return stored.trim();
-        return DEFAULT_API_URL.trim();
-      }
-
-      function setApiUrl(url) {
-        const trimmed = (url || '').trim();
-        if (!trimmed) {
-          localStorage.setItem(STORAGE_KEYS.apiUrl, '');
-          return { ok: true, url: '' };
-        }
-        try {
-          const parsed = new URL(trimmed);
-          if (parsed.protocol !== 'https:' && parsed.protocol !== 'http:') {
-            return { ok: false, reason: 'API-URL muss mit https:// beginnen.' };
-          }
-          localStorage.setItem(STORAGE_KEYS.apiUrl, parsed.href);
-          return { ok: true, url: parsed.href };
-        } catch (err) {
-          return { ok: false, reason: 'Ungültige API-URL.' };
-        }
+        return FIXED_API_URL;
       }
 
       async function hashPin(pin) {
@@ -3802,7 +3765,6 @@
 
       return {
         getApiUrl,
-        setApiUrl,
         hashPin,
         saveRecording,
         loadRecording,
@@ -4355,13 +4317,8 @@
       }
 
       function updateStorageNote() {
-        const apiUrl = StorageManager.getApiUrl();
         const note = document.getElementById('studioStorageNote');
-        if (apiUrl) {
-          note.innerHTML = `<strong>Cloud-API verbunden:</strong> Aufnahmen werden über deine hinterlegte Google-Apps-Script-API (<code>text/plain</code>) synchronisiert und zusätzlich lokal zwischengespeichert.`;
-        } else {
-          note.innerHTML = `<strong>Lokaler Speicher-Fallback aktiv:</strong> Es ist derzeit keine externe API-URL hinterlegt. Deine Aufnahme wird direkt in diesem Browser (IndexedDB) gespeichert. Für geräteübergreifende Cloud-Speicherung kannst du unter „FAQ &amp; Meine Sticker“ deine Google-Apps-Script-URL hinterlegen.`;
-        }
+        note.innerHTML = `<strong>Cloud-Speicher aktiv:</strong> Deine Aufnahme wird sicher gespeichert und ist über den QR-Code auf jedem Smartphone direkt abspielbar.`;
       }
 
       function cleanupMedia() {
@@ -4495,7 +4452,7 @@
             parts.push(d.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }));
           } catch (e) {}
         }
-        parts.push(rec.source === 'api' ? 'Aus Cloud-API geladen' : 'Lokal gespeichert');
+        parts.push(rec.source === 'api' ? 'In der Cloud gespeichert' : 'Lokal zwischengespeichert');
         document.getElementById('playMeta').textContent = parts.join(' · ');
         document.getElementById('playPinStatus').textContent = rec.hasPin
           ? 'Mit 4-stelliger Bearbeitungs-PIN geschützt'
@@ -4680,8 +4637,8 @@
           showPlaybackView(currentRecord);
           showToast(
             res.remoteSaved
-              ? 'StimmMoment aktiviert und in deiner Cloud-API gespeichert!'
-              : 'StimmMoment erfolgreich aktiviert (lokal gespeichert)!',
+              ? 'StimmMoment aktiviert und sicher in der Cloud gespeichert!'
+              : 'StimmMoment aktiviert (lokal zwischengespeichert).',
             'success'
           );
         } catch (err) {
@@ -4874,14 +4831,9 @@
     }
 
     function syncApiConfigUI() {
-      const apiUrl = StorageManager.getApiUrl();
-      document.getElementById('apiUrlInput').value = apiUrl;
       const badge = document.getElementById('storageBadge');
-      if (apiUrl) {
-        badge.textContent = 'Google-Apps-Script-API aktiv';
-        badge.className = 'demo-badge badge-terracotta';
-      } else {
-        badge.textContent = 'Lokaler Browser-Speicher aktiv';
+      if (badge) {
+        badge.textContent = 'Cloud-Speicher aktiv';
         badge.className = 'demo-badge badge-sage';
       }
     }
@@ -5090,25 +5042,6 @@
             <button type="button" class="btn btn-primary btn-sm" data-open-sticker="${escapeHtml(item.id)}">Öffnen</button>
           </div>
         `).join('');
-      });
-
-      // Optionale API-URL-Speicherung
-      document.getElementById('saveApiUrlBtn').addEventListener('click', () => {
-        const res = StorageManager.setApiUrl(document.getElementById('apiUrlInput').value);
-        if (!res.ok) {
-          showToast(res.reason, 'error');
-          return;
-        }
-        syncApiConfigUI();
-        StickerStudio.updateStorageNote();
-        showToast(res.url ? 'Cloud-API-URL gespeichert.' : 'Lokaler Speicher-Modus aktiviert.', 'success');
-      });
-
-      document.getElementById('clearApiUrlBtn').addEventListener('click', () => {
-        StorageManager.setApiUrl('');
-        syncApiConfigUI();
-        StickerStudio.updateStorageNote();
-        showToast('Cloud-API entfernt — lokaler Speicher aktiv.');
       });
     }
 

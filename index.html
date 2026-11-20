@@ -1537,7 +1537,7 @@
 
     /* STICKER STUDIO (?id=...) */
     .studio-shell {
-      max-width: 680px;
+      max-width: 620px;
       margin: 0 auto;
     }
 
@@ -1545,74 +1545,386 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 18px;
+      gap: 10px;
+      margin-bottom: 16px;
       flex-wrap: wrap;
     }
 
     .studio-card {
-      padding: 32px 28px;
+      padding: 36px 30px 28px;
+      background: linear-gradient(180deg, #FFFDF9 0%, #FCF8F0 100%);
     }
 
     .studio-id-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       font-family: var(--font-mono);
-      font-size: 0.84rem;
+      font-size: 0.78rem;
       background: var(--bg-paper-deep);
-      color: var(--ink);
-      padding: 6px 12px;
+      color: var(--ink-soft);
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+    }
+
+    .studio-loading-box {
+      text-align: center;
+      padding: 44px 16px;
+    }
+
+    .studio-loading-emblem {
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      background: var(--terracotta-soft);
+      color: var(--terracotta);
+      display: inline-grid;
+      place-items: center;
+      margin-bottom: 16px;
+      animation: softBreathe 1.8s ease-in-out infinite;
+    }
+
+    @keyframes softBreathe {
+      0%, 100% { transform: scale(0.96); opacity: 0.85; }
+      50% { transform: scale(1.06); opacity: 1; }
+    }
+
+    /* Freundliche Abhör-Postkarte */
+    .playback-header {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .playback-header .eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .playback-header h2 {
+      font-size: clamp(1.65rem, 4.2vw, 2.2rem);
+      margin-bottom: 8px;
+      line-height: 1.18;
+    }
+
+    .playback-meta {
+      color: var(--ink-soft);
+      font-size: 0.94rem;
+      margin: 0;
+    }
+
+    .playback-hero {
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(200, 97, 67, 0.1), transparent 58%),
+        linear-gradient(155deg, #FFFDF9 0%, #F7EDE0 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 32px 24px 26px;
+      text-align: center;
+      margin: 18px 0 22px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), var(--shadow-sm);
+    }
+
+    .play-stage-ring {
+      position: relative;
+      display: inline-grid;
+      place-items: center;
+      width: 118px;
+      height: 118px;
+      margin: 0 auto 12px;
+    }
+
+    .play-stage-ring::before,
+    .play-stage-ring::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(200, 97, 67, 0.18);
+      pointer-events: none;
+      transition: transform 0.35s ease, opacity 0.35s ease;
+    }
+
+    .play-stage-ring::after {
+      inset: 10px;
+      border-color: rgba(200, 97, 67, 0.28);
+    }
+
+    .playback-hero.is-playing .play-stage-ring::before {
+      animation: playRipple 2.2s ease-out infinite;
+    }
+
+    .playback-hero.is-playing .play-stage-ring::after {
+      animation: playRipple 2.2s ease-out 0.7s infinite;
+    }
+
+    @keyframes playRipple {
+      0% { transform: scale(0.92); opacity: 0.75; }
+      100% { transform: scale(1.24); opacity: 0; }
+    }
+
+    .play-hero-btn {
+      width: 84px;
+      height: 84px;
+      border-radius: 50%;
+      border: 4px solid #FFFDF9;
+      background: linear-gradient(145deg, var(--terracotta) 0%, #B75135 100%);
+      color: #FFFDF9;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+      box-shadow: 0 12px 28px rgba(200, 97, 67, 0.34);
+      transition: transform 0.18s ease, box-shadow 0.2s ease;
+    }
+
+    .play-hero-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 15px 32px rgba(183, 81, 53, 0.38);
+    }
+
+    .play-hero-btn:active {
+      transform: scale(0.98);
+    }
+
+    .play-state-label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--terracotta-dark);
+      margin-bottom: 18px;
+      min-height: 1.4em;
+    }
+
+    .studio-waves {
+      max-width: 340px;
+      height: 36px;
+      margin: 0 auto 18px;
+      gap: 4px;
+    }
+
+    .studio-scrubber-wrap {
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .studio-seek-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 7px;
+      border-radius: 99px;
+      background: var(--border-strong);
+      outline: none;
+      cursor: pointer;
+      accent-color: var(--terracotta);
+    }
+
+    .studio-seek-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--terracotta);
+      border: 3px solid #FFFDF9;
+      box-shadow: 0 2px 8px rgba(43, 36, 32, 0.25);
+      cursor: pointer;
+    }
+
+    .studio-time-row {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--ink-muted);
+      margin-top: 7px;
+    }
+
+    .playback-quick-btns {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .pill-mini-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
       border-radius: var(--radius-pill);
       border: 1px solid var(--border-strong);
+      background: rgba(255, 253, 249, 0.85);
+      color: var(--ink-soft);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s ease;
+    }
+
+    .pill-mini-btn:hover {
+      background: #FFFDF9;
+      color: var(--ink);
+      border-color: var(--terracotta);
+    }
+
+    .studio-manage-drawer {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--bg-card-soft);
+      padding: 12px 16px;
+    }
+
+    .studio-manage-drawer summary {
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink-soft);
+    }
+
+    .studio-manage-drawer summary::-webkit-details-marker { display: none; }
+
+    .studio-manage-body {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px dashed var(--border-strong);
+    }
+
+    .studio-gift-cta {
+      margin-top: 20px;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: var(--sage-soft);
+      border: 1px solid rgba(97, 128, 104, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.88rem;
+      color: var(--ink);
+    }
+
+    /* Freundliche Aufnahme-Ansicht */
+    .record-header {
+      text-align: center;
+      margin-bottom: 18px;
+    }
+
+    .record-welcome-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      background: var(--terracotta-soft);
+      color: var(--terracotta-dark);
+      display: inline-grid;
+      place-items: center;
+      margin-bottom: 12px;
+    }
+
+    .record-steps {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 16px 0 20px;
+    }
+
+    .record-step-chip {
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--bg-paper-deep);
+      color: var(--ink-muted);
+      border: 1px solid var(--border);
+      transition: all 0.2s ease;
+    }
+
+    .record-step-chip.is-active {
+      background: var(--terracotta-soft);
+      color: var(--terracotta-dark);
+      border-color: rgba(200, 97, 67, 0.35);
+    }
+
+    .record-step-chip.is-done {
+      background: var(--sage-soft);
+      color: var(--sage-dark);
+      border-color: rgba(97, 128, 104, 0.35);
     }
 
     .recorder-stage {
-      background: var(--bg-card-soft);
+      background:
+        radial-gradient(circle at 50% 15%, rgba(200, 97, 67, 0.09), transparent 58%),
+        linear-gradient(155deg, #FFFDF9 0%, #F7EDE0 100%);
       border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 26px 20px;
+      border-radius: 22px;
+      padding: 30px 22px 26px;
       text-align: center;
-      margin: 20px 0;
+      margin: 18px 0 20px;
+      box-shadow: var(--shadow-sm);
     }
 
     .rec-button {
-      width: 86px;
-      height: 86px;
+      width: 94px;
+      height: 94px;
       border-radius: 50%;
-      border: 5px solid var(--terracotta-soft);
-      background: var(--terracotta);
+      border: 5px solid #FFFDF9;
+      background: linear-gradient(145deg, var(--terracotta) 0%, #B44E33 100%);
       color: #FFFDF9;
       display: inline-grid;
       place-items: center;
       cursor: pointer;
-      box-shadow: 0 10px 26px rgba(200, 97, 67, 0.34);
+      box-shadow: 0 12px 28px rgba(200, 97, 67, 0.34);
       transition: transform 0.16s ease, background 0.2s ease;
     }
 
     .rec-button:hover {
-      transform: scale(1.04);
-      background: var(--terracotta-dark);
+      transform: scale(1.05);
     }
 
     .rec-button.is-recording {
-      background: var(--danger);
-      border-color: var(--danger-soft);
+      background: linear-gradient(145deg, #C7493E 0%, #A9342A 100%);
+      border-color: #FFFDF9;
       animation: pulseRec 1.4s infinite;
     }
 
     @keyframes pulseRec {
       0% { box-shadow: 0 0 0 0 rgba(185, 68, 58, 0.45); }
-      70% { box-shadow: 0 0 0 18px rgba(185, 68, 58, 0); }
+      70% { box-shadow: 0 0 0 20px rgba(185, 68, 58, 0); }
       100% { box-shadow: 0 0 0 0 rgba(185, 68, 58, 0); }
     }
 
     .rec-timer {
       font-family: var(--font-mono);
-      font-size: 1.5rem;
+      font-size: 1.45rem;
       font-weight: 500;
       margin: 14px 0 6px;
       color: var(--ink);
+    }
+
+    .rec-progress-track {
+      max-width: 280px;
+      height: 6px;
+      background: var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+      margin: 12px auto 0;
+    }
+
+    .rec-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--terracotta);
+      border-radius: 99px;
+      transition: width 0.2s linear;
     }
 
     .rec-meter {
@@ -1621,7 +1933,7 @@
       align-items: center;
       gap: 4px;
       height: 36px;
-      margin: 12px auto 0;
+      margin: 14px auto 0;
       max-width: 280px;
     }
 
@@ -1630,12 +1942,20 @@
       height: 18%;
       border-radius: 99px;
       background: var(--terracotta);
-      opacity: 0.4;
+      opacity: 0.35;
       transition: height 0.08s linear, opacity 0.12s ease;
     }
 
     .rec-meter.active .rec-meter-bar {
       opacity: 1;
+    }
+
+    .record-preview-card {
+      background: var(--success-soft);
+      border: 1px solid rgba(70, 120, 85, 0.3);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 20px;
     }
 
     .studio-form-grid {
@@ -1651,7 +1971,7 @@
 
     .field-label {
       display: block;
-      font-size: 0.82rem;
+      font-size: 0.84rem;
       font-weight: 700;
       color: var(--ink-soft);
       margin-bottom: 6px;
@@ -1669,8 +1989,8 @@
       gap: 11px;
       background: var(--bg-paper-deep);
       border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      padding: 14px;
+      border-radius: 14px;
+      padding: 15px;
       margin: 18px 0;
       font-size: 0.88rem;
       color: var(--ink);
@@ -1685,29 +2005,19 @@
       flex-shrink: 0;
     }
 
-    .playback-hero {
-      background: linear-gradient(145deg, #FCF7EE, #F4E9D8);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 28px 22px;
-      text-align: center;
-      margin: 18px 0;
-    }
-
     .audio-native {
       width: 100%;
-      margin-top: 14px;
+      margin-top: 12px;
       border-radius: 10px;
     }
 
     .storage-mode-note {
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       color: var(--ink-muted);
-      background: var(--bg-card-soft);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 13px;
-      margin-top: 16px;
+      text-align: center;
+      margin-top: 22px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
     }
 
     /* FOOTER */
@@ -1816,6 +2126,9 @@
         grid-template-columns: 1fr;
       }
       .studio-form-grid { grid-template-columns: 1fr; }
+      .studio-card { padding: 26px 18px 22px; }
+      .playback-hero, .recorder-stage { padding: 24px 16px 20px; }
+      .studio-gift-cta { flex-direction: column; text-align: center; }
       .guide-step { grid-template-columns: 1fr; }
       .faq-panel { padding-left: 22px; }
       .demo-section { padding: 26px 18px; }
@@ -2782,79 +3095,142 @@
           <div class="studio-back-row">
             <button type="button" class="btn btn-secondary btn-sm" id="studioBackBtn">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-              Zur Startseite
+              StimmMoment
             </button>
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
               <span class="studio-id-badge" id="studioIdLabel">SM-0000-0000</span>
-              <button type="button" class="btn btn-ghost btn-sm" id="copyStudioLinkBtn">Link kopieren</button>
+              <button type="button" class="btn btn-ghost btn-sm" id="copyStudioLinkBtn">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Teilen
+              </button>
             </div>
           </div>
 
           <div class="scrapbook-card studio-card photo-corners">
-            <span class="washi-tape" aria-hidden="true"></span>
+            <span class="washi-tape washi-rose" aria-hidden="true"></span>
 
             <!-- Ladezustand -->
-            <div id="studioLoading" style="text-align:center; padding:32px 0; display:none;">
-              <p style="font-weight:600; margin:0;">Sticker wird geladen …</p>
+            <div id="studioLoading" class="studio-loading-box" style="display:none;">
+              <div class="studio-loading-emblem" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <path d="M4 13v-2M8 16V8M12 19V5M16 16V8M20 13v-2"/>
+                </svg>
+              </div>
+              <h2 style="font-size:1.35rem; margin-bottom:6px;">Dein StimmMoment wird geöffnet …</h2>
+              <p style="margin:0; font-size:0.92rem; color:var(--ink-soft);">Einen kleinen Augenblick, wir holen die Erinnerung für dich.</p>
             </div>
 
             <!-- WIEDERGABE-ANSICHT -->
             <div id="studioPlaybackView" style="display:none;">
-              <span class="eyebrow">Dein StimmMoment</span>
-              <h2 id="playTitle" style="font-size:1.85rem; margin-bottom:6px;">Persönliche Sprachnachricht</h2>
-              <p id="playMeta" style="color:var(--ink-soft); font-size:0.92rem; margin-bottom:16px;"></p>
-
-              <div class="playback-hero">
-                <button type="button" class="play-circle" id="studioPlayToggleBtn" style="width:74px; height:74px; margin:0 auto 14px;" aria-label="Aufnahme abspielen">
-                  <svg id="studioPlayIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg>
-                  <svg id="studioPauseIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                </button>
-                <div class="wave-bars" id="studioPlayWaves" style="max-width:300px; margin:0 auto 12px;" aria-hidden="true"></div>
-                <audio id="studioAudioElement" class="audio-native" controls preload="metadata"></audio>
+              <div class="playback-header">
+                <span class="eyebrow">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6.5 5.5 5.5 0 0 1 21.5 12C19 16.5 12 21 12 21z"/></svg>
+                  Eine Stimme für dich
+                </span>
+                <h2 id="playTitle">Persönliche Sprachnachricht</h2>
+                <p id="playMeta" class="playback-meta"></p>
               </div>
 
-              <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:20px;">
-                <span id="playPinStatus" style="font-size:0.84rem; color:var(--ink-muted);"></span>
-                <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                  <button type="button" class="btn btn-secondary btn-sm" id="editRecordingBtn">Neu besprechen</button>
-                  <button type="button" class="btn btn-danger-outline btn-sm" id="deleteRecordingBtn">Aufnahme löschen</button>
+              <div class="playback-hero" id="studioPlaybackHero">
+                <div class="play-stage-ring">
+                  <button type="button" class="play-hero-btn" id="studioPlayToggleBtn" aria-label="Aufnahme abspielen">
+                    <svg id="studioPlayIcon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="margin-left:3px;"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    <svg id="studioPauseIcon" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4.5" height="16" rx="1.5"/><rect x="13.5" y="4" width="4.5" height="16" rx="1.5"/></svg>
+                  </button>
                 </div>
+                <div class="play-state-label" id="studioPlayStateLabel">Tippe zum Anhören</div>
+
+                <div class="wave-bars studio-waves" id="studioPlayWaves" aria-hidden="true"></div>
+
+                <div class="studio-scrubber-wrap">
+                  <label for="studioSeekRange" class="sr-only">Wiedergabeposition</label>
+                  <input type="range" id="studioSeekRange" class="studio-seek-range" min="0" max="100" value="0" step="0.1">
+                  <div class="studio-time-row">
+                    <span id="studioCurrentTime">0:00</span>
+                    <span id="studioTotalTime">0:00</span>
+                  </div>
+                </div>
+
+                <div class="playback-quick-btns">
+                  <button type="button" class="pill-mini-btn" id="studioRewindBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+                    10 Sek. zurück
+                  </button>
+                  <button type="button" class="pill-mini-btn" id="studioRestartBtn">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polygon points="6 4 20 12 6 20 6 4"/></svg>
+                    Von vorn
+                  </button>
+                </div>
+
+                <audio id="studioAudioElement" class="sr-only" preload="metadata"></audio>
               </div>
 
-              <!-- PIN-Abfrage für Bearbeitung / Löschung -->
-              <div id="pinChallengeBox" style="display:none; margin-top:18px; padding:16px; border-radius:12px; background:var(--bg-paper-deep); border:1px solid var(--border-strong);">
-                <p id="pinChallengeText" style="font-size:0.9rem; font-weight:600; margin-bottom:10px;">Bitte 4-stellige Bearbeitungs-PIN eingeben:</p>
-                <div class="inline-form">
-                  <input type="password" id="pinChallengeInput" class="text-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 Ziffern" style="max-width:150px; font-family:var(--font-mono); letter-spacing:0.25em;">
-                  <button type="button" class="btn btn-primary btn-sm" id="pinChallengeConfirmBtn">Bestätigen</button>
-                  <button type="button" class="btn btn-ghost btn-sm" id="pinChallengeCancelBtn">Abbrechen</button>
+              <details class="studio-manage-drawer" id="studioManageDrawer">
+                <summary>
+                  <span>Aufnahme verwalten oder neu besprechen</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+                </summary>
+                <div class="studio-manage-body">
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+                    <span id="playPinStatus" style="font-size:0.84rem; color:var(--ink-muted);"></span>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+                      <button type="button" class="btn btn-secondary btn-sm" id="editRecordingBtn">Neu besprechen</button>
+                      <button type="button" class="btn btn-danger-outline btn-sm" id="deleteRecordingBtn">Aufnahme löschen</button>
+                    </div>
+                  </div>
+
+                  <!-- PIN-Abfrage für Bearbeitung / Löschung -->
+                  <div id="pinChallengeBox" style="display:none; margin-top:16px; padding:14px; border-radius:12px; background:var(--bg-paper-deep); border:1px solid var(--border-strong);">
+                    <p id="pinChallengeText" style="font-size:0.9rem; font-weight:600; margin-bottom:10px;">Bitte 4-stellige Bearbeitungs-PIN eingeben:</p>
+                    <div class="inline-form">
+                      <input type="password" id="pinChallengeInput" class="text-input" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="4 Ziffern" style="max-width:150px; font-family:var(--font-mono); letter-spacing:0.25em;">
+                      <button type="button" class="btn btn-primary btn-sm" id="pinChallengeConfirmBtn">Bestätigen</button>
+                      <button type="button" class="btn btn-ghost btn-sm" id="pinChallengeCancelBtn">Abbrechen</button>
+                    </div>
+                    <p id="pinChallengeError" style="color:var(--danger); font-size:0.82rem; margin:8px 0 0; display:none;"></p>
+                  </div>
                 </div>
-                <p id="pinChallengeError" style="color:var(--danger); font-size:0.82rem; margin:8px 0 0; display:none;"></p>
+              </details>
+
+              <div class="studio-gift-cta">
+                <span>Möchtest du selbst kostenlose StimmMomente verschenken?</span>
+                <button type="button" class="btn btn-sage btn-sm" data-nav="generator">Eigene Sticker erstellen</button>
               </div>
             </div>
 
             <!-- AUFNAHME-ANSICHT -->
             <div id="studioRecordView" style="display:none;">
-              <span class="eyebrow">Sticker besprechen</span>
-              <h2 style="font-size:1.8rem; margin-bottom:6px;">Sprich deinen StimmMoment ein</h2>
-              <p style="color:var(--ink-soft); font-size:0.94rem;">Bis zu 3 Minuten Aufnahmezeit — direkt im Browser ohne App. Nach der Aufnahme kannst du sie in Ruhe anhören und aktivieren.</p>
+              <div class="record-header">
+                <div class="record-welcome-icon" aria-hidden="true">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </div>
+                <h2 style="font-size:clamp(1.55rem, 3.8vw, 1.95rem); margin-bottom:8px;">Hallo! Dieser Sticker wartet auf deine Stimme.</h2>
+                <p style="color:var(--ink-soft); font-size:0.94rem; margin:0;">Sprich einfach bis zu 3 Minuten ein — du kannst deine Aufnahme vor dem Speichern in Ruhe anhören.</p>
+              </div>
+
+              <div class="record-steps" aria-label="Ablauf in drei Schritten">
+                <span class="record-step-chip is-active" id="recStep1">1. Aufnehmen</span>
+                <span class="record-step-chip" id="recStep2">2. Anhören</span>
+                <span class="record-step-chip" id="recStep3">3. Aktivieren</span>
+              </div>
 
               <div class="recorder-stage">
                 <button type="button" class="rec-button" id="recordToggleBtn" aria-label="Aufnahme starten">
-                  <svg id="recMicIcon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
-                  <svg id="recStopIcon" width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg>
+                  <svg id="recMicIcon" width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                  <svg id="recStopIcon" width="30" height="30" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="6" width="12" height="12" rx="2.5"/></svg>
                 </button>
                 <div class="rec-timer" id="recordTimer">00:00 / 03:00</div>
-                <div id="recordStatusText" style="font-size:0.88rem; color:var(--ink-soft);">Tippe auf das Mikrofon, um die Aufnahme zu starten</div>
+                <div id="recordStatusText" style="font-size:0.92rem; font-weight:600; color:var(--terracotta-dark);">Tippe auf das Mikrofon, wenn du bereit bist</div>
+                <div class="rec-progress-track" aria-hidden="true"><div class="rec-progress-fill" id="recProgressFill"></div></div>
                 <div class="rec-meter" id="recordMeter" aria-hidden="true"></div>
                 <p id="recordErrorText" style="color:var(--danger); font-size:0.86rem; margin:12px 0 0; display:none;"></p>
               </div>
 
               <!-- Vorschau der neuen Aufnahme -->
-              <div id="recordPreviewBox" style="display:none; background:var(--success-soft); border:1px solid rgba(70,120,85,0.3); border-radius:12px; padding:16px; margin-bottom:18px;">
+              <div id="recordPreviewBox" class="record-preview-card" style="display:none;">
                 <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
-                  <strong style="font-size:0.92rem; color:var(--success);">Aufnahme bereit zur Vorschau</strong>
-                  <button type="button" class="btn btn-secondary btn-sm" id="discardPreviewBtn">Neu aufnehmen</button>
+                  <strong style="font-size:0.94rem; color:var(--success);">Klingt gut? Hör kurz rein!</strong>
+                  <button type="button" class="btn btn-secondary btn-sm" id="discardPreviewBtn">Nochmal aufnehmen</button>
                 </div>
                 <audio id="recordPreviewAudio" class="audio-native" controls></audio>
               </div>
@@ -2863,32 +3239,32 @@
               <div class="studio-form-grid">
                 <div class="full">
                   <label class="field-label" for="recTitleInput">Titel der Erinnerung (optional)</label>
-                  <input type="text" id="recTitleInput" class="text-input" maxlength="80" placeholder="z. B. Sommerurlaub am See oder Alles Gute zum Geburtstag">
+                  <input type="text" id="recTitleInput" class="text-input" maxlength="80" placeholder="z. B. Sommerabend am See oder Alles Gute zum Geburtstag">
                 </div>
                 <div>
-                  <label class="field-label" for="recAuthorInput">Dein Name (optional)</label>
+                  <label class="field-label" for="recAuthorInput">Von wem ist die Stimme? (optional)</label>
                   <input type="text" id="recAuthorInput" class="text-input" maxlength="50" placeholder="z. B. Oma Helga">
                 </div>
                 <div>
-                  <label class="field-label" for="recPinInput">4-stellige Bearbeitungs-PIN (optional)</label>
+                  <label class="field-label" for="recPinInput">4-stellige Schutz-PIN (optional)</label>
                   <input type="password" id="recPinInput" class="text-input" inputmode="numeric" pattern="[0-9]{4}" maxlength="4" placeholder="z. B. 4821" style="font-family:var(--font-mono); letter-spacing:0.2em;">
                   <div class="field-hint">Schützt vor versehentlichem Überschreiben.</div>
                 </div>
                 <div class="full">
                   <label class="field-label" for="recEmailInput">E-Mail zum Wiederfinden (optional)</label>
                   <input type="email" id="recEmailInput" class="text-input" maxlength="90" placeholder="name@beispiel.de">
-                  <div class="field-hint">Wird nur genutzt, damit du deine Sticker unter „FAQ &amp; Meine Sticker“ wiederfinden kannst.</div>
+                  <div class="field-hint">Damit du deine Sticker unter „FAQ &amp; Meine Sticker“ jederzeit wiederfindest.</div>
                 </div>
               </div>
 
               <label class="consent-box">
                 <input type="checkbox" id="recConsentCheckbox">
-                <span>Ich bin einverstanden, dass meine Sprachaufnahme unter dieser Sticker-ID gespeichert und beim Scannen des zugehörigen QR-Codes wiedergegeben wird.</span>
+                <span>Ja, meine Sprachaufnahme darf unter dieser Sticker-ID gespeichert und beim Scannen des QR-Codes abgespielt werden.</span>
               </label>
 
               <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
-                <button type="button" class="btn btn-primary" id="activateStickerBtn" disabled>
-                  Sticker jetzt aktivieren
+                <button type="button" class="btn btn-primary" id="activateStickerBtn" style="flex:1; min-width:220px;" disabled>
+                  StimmMoment speichern &amp; aktivieren
                 </button>
                 <button type="button" class="btn btn-ghost btn-sm" id="cancelEditBtn" style="display:none;">Abbrechen</button>
               </div>
@@ -4300,7 +4676,7 @@
 
         const playWaves = document.getElementById('studioPlayWaves');
         playWaves.innerHTML = '';
-        const h = [34, 58, 42, 82, 64, 92, 50, 74, 46, 86, 60, 78, 44, 68, 38];
+        const h = [28, 48, 36, 72, 54, 88, 62, 42, 94, 68, 52, 84, 64, 92, 46, 76, 56, 82, 40, 58, 32];
         h.forEach((pct) => {
           const b = document.createElement('span');
           b.className = 'wave-bar';
@@ -4310,15 +4686,35 @@
       }
 
       function formatClock(sec) {
-        const s = Math.max(0, Math.floor(sec));
+        const s = Math.max(0, Math.floor(sec || 0));
         const m = Math.floor(s / 60);
         const r = s % 60;
         return `${String(m).padStart(2, '0')}:${String(r).padStart(2, '0')}`;
       }
 
+      function formatShortTime(sec) {
+        const s = Math.max(0, Math.floor(sec || 0));
+        const m = Math.floor(s / 60);
+        const r = s % 60;
+        return `${m}:${String(r).padStart(2, '0')}`;
+      }
+
+      function updateRecordSteps(stepNum) {
+        const s1 = document.getElementById('recStep1');
+        const s2 = document.getElementById('recStep2');
+        const s3 = document.getElementById('recStep3');
+        if (!s1 || !s2 || !s3) return;
+        [s1, s2, s3].forEach((el, idx) => {
+          const n = idx + 1;
+          el.classList.remove('is-active', 'is-done');
+          if (n < stepNum) el.classList.add('is-done');
+          else if (n === stepNum) el.classList.add('is-active');
+        });
+      }
+
       function updateStorageNote() {
         const note = document.getElementById('studioStorageNote');
-        note.innerHTML = `<strong>Cloud-Speicher aktiv:</strong> Deine Aufnahme wird sicher gespeichert und ist über den QR-Code auf jedem Smartphone direkt abspielbar.`;
+        note.textContent = 'Ohne App · Direkt per QR-Code auf jedem Smartphone abspielbar';
       }
 
       function cleanupMedia() {
@@ -4365,6 +4761,9 @@
         const btn = document.getElementById('activateStickerBtn');
         const consented = document.getElementById('recConsentCheckbox').checked;
         btn.disabled = !(recordedBlob && consented);
+        if (recordedBlob) {
+          updateRecordSteps(consented ? 3 : 2);
+        }
       }
 
       function resetRecordForm(isEditingExisting) {
@@ -4379,12 +4778,15 @@
         document.getElementById('recMicIcon').style.display = '';
         document.getElementById('recStopIcon').style.display = 'none';
         document.getElementById('recordTimer').textContent = '00:00 / 03:00';
-        document.getElementById('recordStatusText').textContent = 'Tippe auf das Mikrofon, um die Aufnahme zu starten';
+        document.getElementById('recordStatusText').textContent = 'Tippe auf das Mikrofon, wenn du bereit bist';
+        const prog = document.getElementById('recProgressFill');
+        if (prog) prog.style.width = '0%';
         document.getElementById('recordErrorText').style.display = 'none';
         document.getElementById('recordPreviewBox').style.display = 'none';
         document.getElementById('recordPreviewAudio').src = '';
         document.getElementById('recConsentCheckbox').checked = false;
         document.getElementById('cancelEditBtn').style.display = isEditingExisting ? '' : 'none';
+        updateRecordSteps(1);
 
         if (isEditingExisting && currentRecord) {
           document.getElementById('recTitleInput').value = currentRecord.title || '';
@@ -4438,10 +4840,36 @@
         }
       }
 
+      function getEffectiveDuration(audioEl) {
+        if (audioEl && isFinite(audioEl.duration) && audioEl.duration > 0) {
+          return audioEl.duration;
+        }
+        if (currentRecord && Number(currentRecord.durationSec) > 0) {
+          return Number(currentRecord.durationSec);
+        }
+        return 0;
+      }
+
+      function syncPlaybackProgress() {
+        const audioEl = document.getElementById('studioAudioElement');
+        const seek = document.getElementById('studioSeekRange');
+        const curEl = document.getElementById('studioCurrentTime');
+        const totEl = document.getElementById('studioTotalTime');
+        const dur = getEffectiveDuration(audioEl);
+        const cur = audioEl ? (audioEl.currentTime || 0) : 0;
+        if (curEl) curEl.textContent = formatShortTime(cur);
+        if (totEl) totEl.textContent = dur > 0 ? formatShortTime(dur) : '0:00';
+        if (seek) {
+          seek.value = dur > 0 ? String(Math.min(100, (cur / dur) * 100)) : '0';
+        }
+      }
+
       function showPlaybackView(rec) {
         document.getElementById('studioRecordView').style.display = 'none';
         document.getElementById('studioPlaybackView').style.display = 'block';
         document.getElementById('pinChallengeBox').style.display = 'none';
+        const drawer = document.getElementById('studioManageDrawer');
+        if (drawer) drawer.removeAttribute('open');
 
         document.getElementById('playTitle').textContent = rec.title || 'Persönliche Sprachnachricht';
         const parts = [];
@@ -4452,8 +4880,7 @@
             parts.push(d.toLocaleDateString('de-DE', { day: '2-digit', month: 'long', year: 'numeric' }));
           } catch (e) {}
         }
-        parts.push(rec.source === 'api' ? 'In der Cloud gespeichert' : 'Lokal zwischengespeichert');
-        document.getElementById('playMeta').textContent = parts.join(' · ');
+        document.getElementById('playMeta').textContent = parts.length ? parts.join(' · ') : 'Hör mal rein — jemand hat an dich gedacht';
         document.getElementById('playPinStatus').textContent = rec.hasPin
           ? 'Mit 4-stelliger Bearbeitungs-PIN geschützt'
           : 'Ohne PIN-Schutz gespeichert';
@@ -4462,16 +4889,23 @@
         objectUrlPlayback = URL.createObjectURL(rec.blob);
         const audioEl = document.getElementById('studioAudioElement');
         audioEl.src = objectUrlPlayback;
-        syncPlayButtonIcons(false);
+        syncPlayButtonIcons(false, 'Tippe zum Anhören');
+        syncPlaybackProgress();
       }
 
-      function syncPlayButtonIcons(playing) {
+      function syncPlayButtonIcons(playing, customLabel) {
         document.getElementById('studioPlayIcon').style.display = playing ? 'none' : '';
         document.getElementById('studioPauseIcon').style.display = playing ? '' : 'none';
+        const hero = document.getElementById('studioPlaybackHero');
+        if (hero) hero.classList.toggle('is-playing', playing);
+        const label = document.getElementById('studioPlayStateLabel');
+        if (label) {
+          label.textContent = customLabel || (playing ? 'Läuft gerade …' : 'Pausiert — tippe zum Weiterhören');
+        }
         const bars = document.querySelectorAll('#studioPlayWaves .wave-bar');
         bars.forEach((b, i) => {
-          b.style.background = playing ? 'var(--terracotta)' : 'var(--border-strong)';
-          b.style.animation = playing ? `waveBounce ${(0.6 + (i % 4) * 0.14).toFixed(2)}s ease-in-out ${(i * 0.05).toFixed(2)}s infinite alternate` : 'none';
+          b.style.background = playing ? (i % 3 === 0 ? 'var(--gold)' : 'var(--terracotta)') : 'var(--border-strong)';
+          b.style.animation = playing ? `waveBounce ${(0.58 + (i % 4) * 0.14).toFixed(2)}s ease-in-out ${(i * 0.045).toFixed(2)}s infinite alternate` : 'none';
         });
       }
 
@@ -4563,6 +4997,8 @@
         timerInterval = setInterval(() => {
           recordedDuration = Math.floor((Date.now() - recordStartMs) / 1000);
           document.getElementById('recordTimer').textContent = `${formatClock(recordedDuration)} / 03:00`;
+          const prog = document.getElementById('recProgressFill');
+          if (prog) prog.style.width = Math.min(100, (recordedDuration / MAX_SECONDS) * 100).toFixed(1) + '%';
           if (recordedDuration >= MAX_SECONDS) {
             stopRecording();
             showToast('Maximale Aufnahmedauer von 3 Minuten erreicht.', 'success');
@@ -4644,7 +5080,7 @@
         } catch (err) {
           showToast('Speichern fehlgeschlagen: ' + err.message, 'error');
         } finally {
-          btn.textContent = 'Sticker jetzt aktivieren';
+          btn.textContent = 'StimmMoment speichern & aktivieren';
           updateActivateButtonState();
         }
       }
@@ -4719,9 +5155,44 @@
             audioEl.pause();
           }
         });
-        audioEl.addEventListener('play', () => syncPlayButtonIcons(true));
-        audioEl.addEventListener('pause', () => syncPlayButtonIcons(false));
-        audioEl.addEventListener('ended', () => syncPlayButtonIcons(false));
+        audioEl.addEventListener('play', () => syncPlayButtonIcons(true, 'Läuft gerade …'));
+        audioEl.addEventListener('pause', () => {
+          if (!audioEl.ended) syncPlayButtonIcons(false, 'Pausiert — tippe zum Weiterhören');
+        });
+        audioEl.addEventListener('ended', () => {
+          syncPlayButtonIcons(false, 'Nochmal anhören');
+          syncPlaybackProgress();
+        });
+        audioEl.addEventListener('loadedmetadata', syncPlaybackProgress);
+        audioEl.addEventListener('timeupdate', syncPlaybackProgress);
+
+        const seekRange = document.getElementById('studioSeekRange');
+        if (seekRange) {
+          seekRange.addEventListener('input', () => {
+            const dur = getEffectiveDuration(audioEl);
+            if (dur > 0) {
+              audioEl.currentTime = (Number(seekRange.value) / 100) * dur;
+              syncPlaybackProgress();
+            }
+          });
+        }
+
+        const rewindBtn = document.getElementById('studioRewindBtn');
+        if (rewindBtn) {
+          rewindBtn.addEventListener('click', () => {
+            audioEl.currentTime = Math.max(0, (audioEl.currentTime || 0) - 10);
+            syncPlaybackProgress();
+          });
+        }
+
+        const restartBtn = document.getElementById('studioRestartBtn');
+        if (restartBtn) {
+          restartBtn.addEventListener('click', () => {
+            audioEl.currentTime = 0;
+            audioEl.play().catch(() => {});
+            syncPlaybackProgress();
+          });
+        }
 
         document.getElementById('editRecordingBtn').addEventListener('click', () => requestProtectedAction('edit'));
         document.getElementById('deleteRecordingBtn').addEventListener('click', () => requestProtectedAction('delete'));
@@ -4746,9 +5217,17 @@
         document.getElementById('copyStudioLinkBtn').addEventListener('click', () => {
           const eff = UrlManager.getEffectiveBaseUrl();
           const link = eff.ok ? UrlManager.buildStickerUrl(eff.url, currentId) : currentId;
+          if (navigator.share && eff.ok) {
+            navigator.share({
+              title: 'Mein StimmMoment',
+              text: 'Hör mal rein — hier wartet eine Sprachnachricht auf dich:',
+              url: link
+            }).catch(() => {});
+            return;
+          }
           if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(link).then(
-              () => showToast('Sticker-Link kopiert!', 'success'),
+              () => showToast('Link zum Teilen kopiert!', 'success'),
               () => showToast('Link: ' + link)
             );
           } else {
